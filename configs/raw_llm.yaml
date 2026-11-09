@@ -1,0 +1,15 @@
+name: Qwen2.5-0.5B-Instruct
+
+data:
+  questions_path: data/questions.json
+  output_path: data/raw_qwen.csv
+
+llm:
+  model: Qwen/Qwen2.5-0.5B-Instruct
+  dtype: half
+
+sampling:
+  max_tokens: 128
+  temperature: 0.0
+
+result_path: results/results.csv
