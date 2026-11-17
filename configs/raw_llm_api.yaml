@@ -1,0 +1,14 @@
+name: gpt-oss-20b
+
+data:
+  questions_path: data/questions.json
+  output_path: data/raw_gpt.csv
+
+llm:
+  model: openai/gpt-oss-20b
+
+sampling:
+  max_tokens: 4096
+  temperature: 0.0
+
+result_path: results/results.csv
