@@ -2,6 +2,8 @@ import csv
 from pathlib import Path
 import yaml
 
+import json
+
 def log_results(results_path,
                 name: str,
                 row: dict):
@@ -26,3 +28,32 @@ def log_results(results_path,
 def load_config(path) -> dict:
     with open(path, "r") as f:
         return yaml.safe_load(f)
+
+def make_prompts(questions_path: str,
+                 system: str = ("Briefly answer the following question. Use Russian language. "
+                                "Answer in plain text, without markdown, tables or lists.")
+                 ) -> list[list[dict]]:
+    """
+
+    :param questions_path: path to json file with questions
+    :return: chat template for LLM query
+    """
+
+    with open(questions_path, encoding="utf-8") as f:
+        data = json.load(f)
+
+    messages = []
+
+    for i in data:
+        messages.append([
+            {
+                "role": "system",
+                "content": system
+            },
+            {
+                "role": "user",
+                "content": i['question']
+            }]
+        )
+
+    return messages
