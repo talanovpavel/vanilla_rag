@@ -7,39 +7,10 @@ from vllm import LLM
 
 import click
 
-from utils import load_config
+from utils import load_config, make_prompts
 
 import os
 import pandas as pd
-
-
-def make_prompts(questions_path: str,
-                 system: str = "Briefely answer the following question. Use Russian language"
-                 ) -> list[list[dict]]:
-    """
-
-    :param questions_path: path to json file with questions
-    :return: chat template for vllm inference
-    """
-
-    with open(questions_path, encoding="utf-8") as f:
-        data = json.load(f)
-
-    messages = []
-
-    for i in data:
-        messages.append([
-            {
-                "role": "system",
-                "content": system
-            },
-            {
-                "role": "user",
-                "content": i['question']
-            }]
-        )
-
-    return messages
 
 
 def get_outputs(messages: list[list[dict]],
@@ -72,7 +43,6 @@ def main(config_path):
     output_path = config["data"]["output_path"]
     llm_params = config["llm"]
     sampling_params = config["sampling"]
-    result_path = config["result_path"]
 
     messages = make_prompts(questions_path)
     answers = get_outputs(messages, llm_params, sampling_params)
